@@ -8,6 +8,9 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "outDir": "dist",
     "jsx": "react-jsx",
     "moduleResolution": "node",
