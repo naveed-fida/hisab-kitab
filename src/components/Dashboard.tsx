@@ -30,13 +30,18 @@ const Dashboard: React.FC = () => {
               key={project.id}
               className="block p-6 rounded-lg shadow-md hover:bg-violet-100 transition duration-300 ease-in-out bg-violet-50"
             >
-              <h2 className="text-xl font-semibold mb-2">{project.name}</h2>
+              <h2 className="text-xl text-gray-600 font-semibold mb-2">
+                {project.name}
+              </h2>
               <p className="text-gray-700">
-                Total Expenses: ${totalExpenses.toFixed(2)}
+                Total Expenses:{" "}
+                <span className="font-semibold text-gray-900">
+                  PKR {totalExpenses.toFixed(2)}
+                </span>
               </p>
               <p className="text-gray-500 text-sm">
                 {lastExpense
-                  ? `Last Updated Expense: ${lastExpense.description} - PKR ${
+                  ? `Last Updated Expense: ${lastExpense.title} - PKR ${
                       lastUpdatedPortion.amount
                     } on ${new Date(
                       getDateExpenseEdited(lastExpense)

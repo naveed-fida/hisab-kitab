@@ -1,6 +1,6 @@
 type Expense = {
   id: string;
-  description: string;
+  title: string;
   expensePortions: ExpensePortion[];
 };
 
@@ -8,6 +8,7 @@ type ExpensePortion = {
   id: string;
   amount: number;
   dateAdded: string;
+  description: string;
 };
 
 type Project = {

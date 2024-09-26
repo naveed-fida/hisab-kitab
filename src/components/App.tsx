@@ -8,7 +8,7 @@ export function App() {
           <h1 className="text-xl font-semibold">HisabKitab</h1>
         </div>
       </div>
-      <div className="app-views">
+      <div className="app-views h-[calc(100vh-3rem)] overflow-y-scroll">
         <Outlet />
       </div>
     </div>

@@ -1,33 +1,63 @@
 import { useState } from "react";
 
 export function useExpenseData() {
-  const [projects, setProjects] = useState([
+  const [projects, setProjects] = useState<Project[]>([
     {
       id: "1",
       name: "Gul Agha's House",
       expenses: [
         {
           id: "1",
-          description: "Cement",
+          title: "Cement",
           expensePortions: [
-            { id: "1", amount: 100, dateAdded: "2024-09-01" },
-            { id: "2", amount: 200, dateAdded: "2024-09-02" },
+            {
+              id: "1",
+              amount: 100,
+              dateAdded: "2024-09-01",
+              description: "4 bags",
+            },
+            {
+              id: "2",
+              amount: 200,
+              dateAdded: "2024-09-02",
+              description: "8 bags",
+            },
           ],
         },
         {
           id: "2",
-          description: "Bricks",
+          title: "Bricks",
           expensePortions: [
-            { id: "1", amount: 100, dateAdded: "2024-09-03" },
-            { id: "2", amount: 200, dateAdded: "2024-09-04" },
+            {
+              id: "1",
+              amount: 100,
+              dateAdded: "2024-09-03",
+              description: "100",
+            },
+            {
+              id: "2",
+              amount: 200,
+              dateAdded: "2024-09-04",
+              description: "200",
+            },
           ],
         },
         {
           id: "3",
-          description: "Wood",
+          title: "Wood",
           expensePortions: [
-            { id: "1", amount: 100, dateAdded: "2024-09-05" },
-            { id: "2", amount: 200, dateAdded: "2024-09-06" },
+            {
+              id: "1",
+              amount: 100,
+              dateAdded: "2024-09-05",
+              description: "50 kg",
+            },
+            {
+              id: "2",
+              amount: 200,
+              dateAdded: "2024-09-06",
+              description: "100 kg",
+            },
           ],
         },
       ],
@@ -38,29 +68,56 @@ export function useExpenseData() {
       expenses: [
         {
           id: "4",
-          description: "Cement",
+          title: "Cement",
           expensePortions: [
-            { id: "1", amount: 100, dateAdded: "2024-09-07" },
-            { id: "2", amount: 200, dateAdded: "2024-09-08" },
+            {
+              id: "1",
+              amount: 100,
+              dateAdded: "2024-09-07",
+              description: "4 bags",
+            },
+            {
+              id: "2",
+              amount: 200,
+              dateAdded: "2024-09-08",
+              description: "8 bags",
+            },
           ],
         },
         {
           id: "5",
-          description: "Bricks",
-          amount: 200,
+          title: "Bricks",
           expensePortions: [
-            { id: "1", amount: 100, dateAdded: "2024-09-09" },
-            { id: "2", amount: 200, dateAdded: "2024-09-10" },
+            {
+              id: "1",
+              amount: 100,
+              dateAdded: "2024-09-09",
+              description: "100",
+            },
+            {
+              id: "2",
+              amount: 200,
+              dateAdded: "2024-09-10",
+              description: "200",
+            },
           ],
         },
         {
           id: "6",
-          description: "Wood",
-          amount: 200,
-          date: "2024-09-17",
+          title: "Wood",
           expensePortions: [
-            { id: "1", amount: 100, dateAdded: "2024-09-11" },
-            { id: "2", amount: 200, dateAdded: "2024-09-12" },
+            {
+              id: "1",
+              amount: 100,
+              dateAdded: "2024-09-11",
+              description: "50 kg",
+            },
+            {
+              id: "2",
+              amount: 200,
+              dateAdded: "2024-09-12",
+              description: "100 kg",
+            },
           ],
         },
       ],
@@ -104,7 +161,7 @@ export function useExpenseData() {
   const addExpensePortion = (
     projectId: string,
     expenseId: string,
-    amount: number
+    portion: { amount: number; description: string }
   ) => {
     setProjects((oldProjects) => {
       return oldProjects.map((project) => {
@@ -119,7 +176,8 @@ export function useExpenseData() {
                     ...expense.expensePortions,
                     {
                       id: `${expense.expensePortions.length + 2}`,
-                      amount,
+                      amount: portion.amount,
+                      description: portion.description,
                       dateAdded: new Date().toISOString(),
                     },
                   ],
