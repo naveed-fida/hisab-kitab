@@ -1,22 +1,32 @@
 import { useEffect, useRef, useState } from "react";
-import { DialogClose, DialogContent, DialogHeader } from "./ui/Dialog";
+import {
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/Dialog";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
-interface DialogProps {
-  expense: Expense;
-  onPortionAddClick: (portion: { amount: number; description: string }) => void;
+interface EditExpensePortionDialogProps {
+  portion: ExpensePortion;
+  onSubmit: (portion: { description: string; amount: number }) => void;
 }
 
-export function AddPortionDialog({ expense, onPortionAddClick }: DialogProps) {
-  const [amount, setAmount] = useState({ value: 0, error: "" });
-  const [description, setDescription] = useState({ value: "", error: "" });
+export function EditExpensePortionDialog({
+  portion,
+  onSubmit,
+}: EditExpensePortionDialogProps) {
+  const [amount, setAmount] = useState({ value: portion.amount, error: "" });
+  const [description, setDescription] = useState({
+    value: portion.description,
+    error: "",
+  });
   const amountRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  const handleAddPortion = () => {
+  const handleEditPortion = () => {
     if (amount.value <= 0) {
       setAmount((prevAmount) => ({
         ...prevAmount,
@@ -33,9 +43,7 @@ export function AddPortionDialog({ expense, onPortionAddClick }: DialogProps) {
       return;
     }
 
-    onPortionAddClick({ amount: amount.value, description: description.value });
-    setAmount({ value: 0, error: "" });
-    setDescription({ value: "", error: "" });
+    onSubmit({ amount: amount.value, description: description.value });
     closeRef.current?.click();
   };
 
@@ -60,14 +68,14 @@ export function AddPortionDialog({ expense, onPortionAddClick }: DialogProps) {
     <DialogContent>
       <DialogHeader>
         <DialogTitle className="text-xl font-semibold mb-4">
-          Add more {expense.title}
+          Edit Expense Portion
         </DialogTitle>
       </DialogHeader>
       <div>
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleAddPortion();
+            handleEditPortion();
           }}
         >
           <div className="flex flex-col gap-4">
@@ -85,7 +93,7 @@ export function AddPortionDialog({ expense, onPortionAddClick }: DialogProps) {
                 onWheel={(e) => e.preventDefault()}
               />
               {amount.error !== "" ? (
-                <span className="text-red-500">{amount.error}</span>
+                <span className="text-red-500 ">{amount.error}</span>
               ) : null}
             </div>
             <div>
@@ -101,13 +109,13 @@ export function AddPortionDialog({ expense, onPortionAddClick }: DialogProps) {
                 className="mt-2"
               />
               {description.error !== "" ? (
-                <span className="text-red-500">{description.error}</span>
+                <span className="text-red-500 ">{description.error}</span>
               ) : null}
             </div>
           </div>
           <div className="mt-4 flex justify-end gap-2">
             <Button className="flex gap-2" type="submit">
-              <span>Add</span>
+              <span>Update</span>
             </Button>
             <DialogClose asChild>
               <Button ref={closeRef} type="button" variant="secondary">

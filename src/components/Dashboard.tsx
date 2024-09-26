@@ -7,6 +7,7 @@ import {
   getLastUpdatedExpense,
   getLastUpdatedPortion,
 } from "../utils";
+import { CURRENCY } from "../lib/constants";
 
 const Dashboard: React.FC = () => {
   const { projects } = useExpenseData();
@@ -36,10 +37,10 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-700">
                 Total Expenses:{" "}
                 <span className="font-semibold text-gray-900">
-                  PKR {totalExpenses.toFixed(2)}
+                  {`${CURRENCY} ${totalExpenses.toFixed(2)}`}
                 </span>
               </p>
-              <p className="text-gray-500 text-sm">
+              <p className="text-gray-500">
                 {lastExpense
                   ? `Last Updated Expense: ${lastExpense.title} - PKR ${
                       lastUpdatedPortion.amount

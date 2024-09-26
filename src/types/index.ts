@@ -16,3 +16,9 @@ type Project = {
   name: string;
   expenses: Expense[];
 };
+
+type NewExpense = {
+  title: string;
+  portionDescription: string;
+  portionAmount: number;
+};

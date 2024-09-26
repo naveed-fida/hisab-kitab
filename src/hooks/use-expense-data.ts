@@ -1,23 +1,24 @@
+import { createId } from "@paralleldrive/cuid2";
 import { useState } from "react";
 
 export function useExpenseData() {
   const [projects, setProjects] = useState<Project[]>([
     {
-      id: "1",
+      id: createId(),
       name: "Gul Agha's House",
       expenses: [
         {
-          id: "1",
+          id: createId(),
           title: "Cement",
           expensePortions: [
             {
-              id: "1",
+              id: createId(),
               amount: 100,
               dateAdded: "2024-09-01",
               description: "4 bags",
             },
             {
-              id: "2",
+              id: createId(),
               amount: 200,
               dateAdded: "2024-09-02",
               description: "8 bags",
@@ -25,35 +26,35 @@ export function useExpenseData() {
           ],
         },
         {
-          id: "2",
+          id: createId(),
           title: "Bricks",
           expensePortions: [
             {
-              id: "1",
+              id: createId(),
               amount: 100,
               dateAdded: "2024-09-03",
-              description: "100",
+              description: "100 Ct",
             },
             {
-              id: "2",
+              id: createId(),
               amount: 200,
               dateAdded: "2024-09-04",
-              description: "200",
+              description: "200 Ct",
             },
           ],
         },
         {
-          id: "3",
+          id: createId(),
           title: "Wood",
           expensePortions: [
             {
-              id: "1",
+              id: createId(),
               amount: 100,
               dateAdded: "2024-09-05",
               description: "50 kg",
             },
             {
-              id: "2",
+              id: createId(),
               amount: 200,
               dateAdded: "2024-09-06",
               description: "100 kg",
@@ -63,21 +64,21 @@ export function useExpenseData() {
       ],
     },
     {
-      id: "2",
+      id: createId(),
       name: "Mirdeen's Mosque",
       expenses: [
         {
-          id: "4",
+          id: createId(),
           title: "Cement",
           expensePortions: [
             {
-              id: "1",
+              id: createId(),
               amount: 100,
               dateAdded: "2024-09-07",
               description: "4 bags",
             },
             {
-              id: "2",
+              id: createId(),
               amount: 200,
               dateAdded: "2024-09-08",
               description: "8 bags",
@@ -85,35 +86,35 @@ export function useExpenseData() {
           ],
         },
         {
-          id: "5",
+          id: createId(),
           title: "Bricks",
           expensePortions: [
             {
-              id: "1",
+              id: createId(),
               amount: 100,
               dateAdded: "2024-09-09",
-              description: "100",
+              description: "100 Ct",
             },
             {
-              id: "2",
+              id: createId(),
               amount: 200,
               dateAdded: "2024-09-10",
-              description: "200",
+              description: "200 Ct",
             },
           ],
         },
         {
-          id: "6",
+          id: createId(),
           title: "Wood",
           expensePortions: [
             {
-              id: "1",
+              id: createId(),
               amount: 100,
               dateAdded: "2024-09-11",
               description: "50 kg",
             },
             {
-              id: "2",
+              id: createId(),
               amount: 200,
               dateAdded: "2024-09-12",
               description: "100 kg",
@@ -128,13 +129,27 @@ export function useExpenseData() {
     setProjects([...projects, project]);
   };
 
-  const addExpenseToProject = (projectId: string, expense: Expense) => {
+  const addExpenseToProject = (projectId: string, expense: NewExpense) => {
     setProjects((oldProjects) => {
       return oldProjects.map((project) => {
         if (project.id === projectId) {
           return {
             ...project,
-            expenses: [...project.expenses, expense],
+            expenses: [
+              ...project.expenses,
+              {
+                id: createId(),
+                title: expense.title,
+                expensePortions: [
+                  {
+                    id: createId(),
+                    amount: expense.portionAmount,
+                    description: expense.portionDescription,
+                    dateAdded: new Date().toISOString(),
+                  },
+                ],
+              },
+            ],
           };
         }
         return project;
@@ -175,7 +190,7 @@ export function useExpenseData() {
                   expensePortions: [
                     ...expense.expensePortions,
                     {
-                      id: `${expense.expensePortions.length + 2}`,
+                      id: createId(),
                       amount: portion.amount,
                       description: portion.description,
                       dateAdded: new Date().toISOString(),
@@ -229,6 +244,68 @@ export function useExpenseData() {
     return project?.expenses.find((expense) => expense.id === expenseId);
   };
 
+  const updateExpenseTitle = (
+    projectId: string,
+    expenseId: string,
+    title: string
+  ) => {
+    setProjects((oldProjects) => {
+      return oldProjects.map((project) => {
+        if (project.id === projectId) {
+          return {
+            ...project,
+            expenses: project.expenses.map((expense) => {
+              if (expense.id === expenseId) {
+                return {
+                  ...expense,
+                  title,
+                };
+              }
+              return expense;
+            }),
+          };
+        }
+        return project;
+      });
+    });
+  };
+
+  const updateExpensePortion = (
+    projectId: string,
+    expenseId: string,
+    portionId: string,
+    portion: { amount: number; description: string }
+  ) => {
+    setProjects((oldProjects) => {
+      return oldProjects.map((project) => {
+        if (project.id === projectId) {
+          return {
+            ...project,
+            expenses: project.expenses.map((expense) => {
+              if (expense.id === expenseId) {
+                return {
+                  ...expense,
+                  expensePortions: expense.expensePortions.map((p) => {
+                    if (p.id === portionId) {
+                      return {
+                        ...p,
+                        amount: portion.amount,
+                        description: portion.description,
+                      };
+                    }
+                    return p;
+                  }),
+                };
+              }
+              return expense;
+            }),
+          };
+        }
+        return project;
+      });
+    });
+  };
+
   return {
     projects,
     getProject,
@@ -238,5 +315,7 @@ export function useExpenseData() {
     removeExpensePortion,
     removeExpenseFromProject,
     getExpense,
+    updateExpenseTitle,
+    updateExpensePortion,
   };
 }
