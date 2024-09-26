@@ -6,7 +6,7 @@ import {
   getDateExpenseEdited,
   getLastUpdatedExpense,
   getLastUpdatedPortion,
-} from "../utils";
+} from "../../utils";
 import { CURRENCY } from "../lib/constants";
 
 const Dashboard: React.FC = () => {

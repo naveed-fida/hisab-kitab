@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useExpenseData } from "../hooks/use-expense-data";
-import { calculateExpenseTotal, getDateExpenseEdited } from "../utils";
+import { calculateExpenseTotal, getDateExpenseEdited } from "../../utils";
 import {
   CircleArrowLeft,
   CircleChevronDownIcon,
