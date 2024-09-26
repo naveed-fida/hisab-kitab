@@ -15,6 +15,7 @@ type Project = {
   id: string;
   name: string;
   expenses: Expense[];
+  createdAt: string;
 };
 
 type NewExpense = {

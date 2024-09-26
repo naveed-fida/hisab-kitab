@@ -2,6 +2,7 @@ export const initialProjects = [
   {
     id: "vdqy2qfhf2l9ww455npli57w",
     name: "Gul Agha's House",
+    createdAt: "2024-09-01",
     expenses: [
       {
         id: "tpfv0steh3qx6bu7eibsymfy",
@@ -62,6 +63,7 @@ export const initialProjects = [
   {
     id: "m0382e11s7mngmyyy5zumefo",
     name: "Mirdeen's Mosque",
+    createdAt: "2024-09-07",
     expenses: [
       {
         id: "gp01qzku1brgs3inr7sqblm0",

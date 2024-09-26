@@ -11,6 +11,7 @@ export function AppDataProvider(props: ProviderProps<{ projects: Project[] }>) {
       id: createId(),
       name: title,
       expenses: [],
+      createdAt: new Date().toISOString(),
     };
     setProjects([...projects, newProject]);
   };

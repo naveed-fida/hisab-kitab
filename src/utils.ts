@@ -51,3 +51,9 @@ export const sortExpensePortionsByDate = (portions: ExpensePortion[]) => {
     return new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime();
   });
 };
+
+export const sortProjectsByDate = (projects: Project[]) => {
+  return projects.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+};

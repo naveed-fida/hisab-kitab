@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  calculateTotalExpenses,
-  getDateExpenseEdited,
-  getLastUpdatedExpense,
-  getLastUpdatedPortion,
-} from "../../utils";
 import { CURRENCY } from "../lib/constants";
-import { useAppData } from "../lib/dataStore";
 import {
   Dialog,
   DialogTrigger,
@@ -16,9 +9,10 @@ import {
 } from "./ui/Dialog";
 import { DialogClose, DialogTitle } from "@radix-ui/react-dialog";
 import { Button } from "./ui/Button";
+import { useDashboardData } from "../lib/useDashboardData";
 
 const Dashboard: React.FC = () => {
-  const { projects, addProject } = useAppData();
+  const { projectsStats, addProject } = useDashboardData();
 
   return (
     <div>
@@ -28,11 +22,7 @@ const Dashboard: React.FC = () => {
         </h1>
       </div>
       <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {projects.map((project) => {
-          const totalExpenses = calculateTotalExpenses(project.expenses);
-          const lastExpense = getLastUpdatedExpense(project.expenses);
-          const lastUpdatedPortion = getLastUpdatedPortion(lastExpense);
-
+        {projectsStats.map((project) => {
           return (
             <Link
               to={`/project/${project.id}`}
@@ -42,22 +32,17 @@ const Dashboard: React.FC = () => {
               <h2 className="text-xl text-gray-600 font-semibold mb-2">
                 {project.name}
               </h2>
-              {project.expenses.length > 0 ? (
+              {project.totalExpenses ? (
                 <>
                   <p className="text-gray-700">
                     Total Expenses:{" "}
                     <span className="font-semibold text-gray-900">
-                      {`${CURRENCY} ${totalExpenses.toFixed(2)}`}
+                      {`${CURRENCY} ${project.totalExpenses.toFixed(2)}`}
                     </span>
                   </p>
                   <p className="text-gray-500">
-                    {lastExpense
-                      ? `Last Updated Expense: ${lastExpense.title} - PKR ${
-                          lastUpdatedPortion.amount
-                        } on ${new Date(
-                          getDateExpenseEdited(lastExpense)
-                        ).toLocaleDateString()}`
-                      : "No expenses yet"}
+                    Last Updated Expense: ${project.lastExpense.title} - PKR $
+                    {project.lastExpense.amount} on {project.lastExpense.date}
                   </p>
                 </>
               ) : (
