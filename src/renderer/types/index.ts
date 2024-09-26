@@ -22,3 +22,33 @@ type NewExpense = {
   portionDescription: string;
   portionAmount: number;
 };
+
+type AppContextType = {
+  projects: Project[];
+  getProject: (projectId: string) => Project | undefined;
+  addProject: (title: string) => void;
+  addExpenseToProject: (projectId: string, expense: NewExpense) => void;
+  getExpense: (projectId: string, expenseId: string) => Expense | undefined;
+  updateExpenseTitle: (
+    projectId: string,
+    expenseId: string,
+    title: string
+  ) => void;
+  removeExpenseFromProject: (projectId: string, expenseId: string) => void;
+  addExpensePortion: (
+    projectId: string,
+    expenseId: string,
+    portion: { amount: number; description: string }
+  ) => void;
+  removeExpensePortion: (
+    projectId: string,
+    expenseId: string,
+    portionId: string
+  ) => void;
+  updateExpensePortion: (
+    projectId: string,
+    expenseId: string,
+    portionId: string,
+    portion: { amount: number; description: string }
+  ) => void;
+};

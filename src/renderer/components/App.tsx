@@ -1,4 +1,6 @@
 import { Outlet } from "react-router-dom";
+import { AppDataProvider } from "../lib/dataStore";
+import { initialProjects } from "../lib/initalProjects";
 
 export function App() {
   return (
@@ -8,9 +10,11 @@ export function App() {
           <h1 className="text-xl font-semibold">HisabKitab</h1>
         </div>
       </div>
-      <div className="app-views h-[calc(100vh-3rem)] overflow-y-scroll">
-        <Outlet />
-      </div>
+      <AppDataProvider value={{ projects: initialProjects }}>
+        <div className="app-views h-[calc(100vh-3rem)] overflow-y-scroll">
+          <Outlet />
+        </div>
+      </AppDataProvider>
     </div>
   );
 }

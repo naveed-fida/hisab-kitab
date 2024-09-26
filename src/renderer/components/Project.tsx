@@ -1,6 +1,10 @@
 import { Link, useParams } from "react-router-dom";
-import { useExpenseData } from "../hooks/use-expense-data";
-import { calculateExpenseTotal, getDateExpenseEdited } from "../../utils";
+import {
+  calculateExpenseTotal,
+  getDateExpenseEdited,
+  sortExpensePortionsByDate,
+  sortExpensesByDate,
+} from "../../utils";
 import {
   CircleArrowLeft,
   CircleChevronDownIcon,
@@ -18,6 +22,7 @@ import { EditExpenseDialog } from "./EditExpenseDialog";
 import { EditExpensePortionDialog } from "./EditExpensePortionDialog";
 import { CURRENCY } from "../lib/constants";
 import { AddNewExpenseDialog } from "./AddNewExpenseDialog";
+import { useAppData } from "../lib/dataStore";
 
 export function Project() {
   const { projectId } = useParams();
@@ -29,7 +34,7 @@ export function Project() {
     updateExpenseTitle,
     updateExpensePortion,
     addExpenseToProject,
-  } = useExpenseData();
+  } = useAppData();
   const project = getProject(projectId);
   const [expandedExpenseId, setExpandedExpenseId] = useState<string | null>(
     null
@@ -92,7 +97,7 @@ export function Project() {
             Actions
           </div>
         </div>
-        {project.expenses.map((expense) => (
+        {sortExpensesByDate(project.expenses).map((expense) => (
           <div key={expense.id}>
             <div className="grid grid-cols-6 bg-white p-4 rounded-md hover:bg-violet-100 transition duration-300 ease-in-out">
               <div className=" font-medium text-gray-900">
@@ -179,67 +184,71 @@ export function Project() {
                     Actions
                   </div>
                 </div>
-                {expense.expensePortions.map((portion) => (
-                  <div
-                    key={portion.id}
-                    className="ml-4 grid grid-cols-4 bg-white p-4 rounded-md hover:bg-violet-100 transition duration-300 ease-in-out"
-                  >
-                    <div className=" text-gray-700">{portion.description}</div>
-                    <div className=" text-gray-800 font-bold">
-                      {portion.amount.toFixed(2)}
+                {sortExpensePortionsByDate(expense.expensePortions).map(
+                  (portion) => (
+                    <div
+                      key={portion.id}
+                      className="ml-4 grid grid-cols-4 bg-white p-4 rounded-md hover:bg-violet-100 transition duration-300 ease-in-out"
+                    >
+                      <div className=" text-gray-700">
+                        {portion.description}
+                      </div>
+                      <div className=" text-gray-800 font-bold">
+                        {portion.amount.toFixed(2)}
+                      </div>
+                      <div className=" text-gray-500">
+                        {new Date(portion.dateAdded).toLocaleDateString()}
+                      </div>
+                      <div className="flex gap-2">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              className="text-red-500 hover:text-red-600"
+                              variant="outline"
+                            >
+                              <TrashIcon />
+                            </Button>
+                          </DialogTrigger>
+                          <DeleteDialog
+                            title="Delete Expense Portion"
+                            description="Are you sure you want to delete this expense portion?"
+                            onConfirm={() =>
+                              removeExpensePortion(
+                                project.id,
+                                expense.id,
+                                portion.id
+                              )
+                            }
+                          />
+                        </Dialog>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              className="text-slate-700 hover:text-slate-800"
+                              variant="outline"
+                            >
+                              <PenIcon />
+                            </Button>
+                          </DialogTrigger>
+                          <EditExpensePortionDialog
+                            portion={portion}
+                            onSubmit={(p: {
+                              description: string;
+                              amount: number;
+                            }) => {
+                              updateExpensePortion(
+                                project.id,
+                                expense.id,
+                                portion.id,
+                                p
+                              );
+                            }}
+                          />
+                        </Dialog>
+                      </div>
                     </div>
-                    <div className=" text-gray-500">
-                      {new Date(portion.dateAdded).toLocaleDateString()}
-                    </div>
-                    <div className="flex gap-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            className="text-red-500 hover:text-red-600"
-                            variant="outline"
-                          >
-                            <TrashIcon />
-                          </Button>
-                        </DialogTrigger>
-                        <DeleteDialog
-                          title="Delete Expense Portion"
-                          description="Are you sure you want to delete this expense portion?"
-                          onConfirm={() =>
-                            removeExpensePortion(
-                              project.id,
-                              expense.id,
-                              portion.id
-                            )
-                          }
-                        />
-                      </Dialog>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            className="text-slate-700 hover:text-slate-800"
-                            variant="outline"
-                          >
-                            <PenIcon />
-                          </Button>
-                        </DialogTrigger>
-                        <EditExpensePortionDialog
-                          portion={portion}
-                          onSubmit={(p: {
-                            description: string;
-                            amount: number;
-                          }) => {
-                            updateExpensePortion(
-                              project.id,
-                              expense.id,
-                              portion.id,
-                              p
-                            );
-                          }}
-                        />
-                      </Dialog>
-                    </div>
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             )}
           </div>

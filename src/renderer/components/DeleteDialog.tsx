@@ -26,7 +26,11 @@ export function DeleteDialog({
       </DialogHeader>
       <DialogDescription>{description}</DialogDescription>
       <DialogFooter>
-        <Button className="bg-red-600 text-white" onClick={onConfirm}>
+        <Button
+          type="button"
+          className="bg-red-600 text-white"
+          onClick={onConfirm}
+        >
           Delete
         </Button>
         <DialogClose asChild>

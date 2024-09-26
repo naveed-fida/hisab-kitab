@@ -1,132 +1,18 @@
 import { createId } from "@paralleldrive/cuid2";
-import { useState } from "react";
+import { createContext, ProviderProps, useContext, useState } from "react";
 
-export function useExpenseData() {
-  const [projects, setProjects] = useState<Project[]>([
-    {
-      id: createId(),
-      name: "Gul Agha's House",
-      expenses: [
-        {
-          id: createId(),
-          title: "Cement",
-          expensePortions: [
-            {
-              id: createId(),
-              amount: 100,
-              dateAdded: "2024-09-01",
-              description: "4 bags",
-            },
-            {
-              id: createId(),
-              amount: 200,
-              dateAdded: "2024-09-02",
-              description: "8 bags",
-            },
-          ],
-        },
-        {
-          id: createId(),
-          title: "Bricks",
-          expensePortions: [
-            {
-              id: createId(),
-              amount: 100,
-              dateAdded: "2024-09-03",
-              description: "100 Ct",
-            },
-            {
-              id: createId(),
-              amount: 200,
-              dateAdded: "2024-09-04",
-              description: "200 Ct",
-            },
-          ],
-        },
-        {
-          id: createId(),
-          title: "Wood",
-          expensePortions: [
-            {
-              id: createId(),
-              amount: 100,
-              dateAdded: "2024-09-05",
-              description: "50 kg",
-            },
-            {
-              id: createId(),
-              amount: 200,
-              dateAdded: "2024-09-06",
-              description: "100 kg",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: createId(),
-      name: "Mirdeen's Mosque",
-      expenses: [
-        {
-          id: createId(),
-          title: "Cement",
-          expensePortions: [
-            {
-              id: createId(),
-              amount: 100,
-              dateAdded: "2024-09-07",
-              description: "4 bags",
-            },
-            {
-              id: createId(),
-              amount: 200,
-              dateAdded: "2024-09-08",
-              description: "8 bags",
-            },
-          ],
-        },
-        {
-          id: createId(),
-          title: "Bricks",
-          expensePortions: [
-            {
-              id: createId(),
-              amount: 100,
-              dateAdded: "2024-09-09",
-              description: "100 Ct",
-            },
-            {
-              id: createId(),
-              amount: 200,
-              dateAdded: "2024-09-10",
-              description: "200 Ct",
-            },
-          ],
-        },
-        {
-          id: createId(),
-          title: "Wood",
-          expensePortions: [
-            {
-              id: createId(),
-              amount: 100,
-              dateAdded: "2024-09-11",
-              description: "50 kg",
-            },
-            {
-              id: createId(),
-              amount: 200,
-              dateAdded: "2024-09-12",
-              description: "100 kg",
-            },
-          ],
-        },
-      ],
-    },
-  ]);
+const AppDataContext = createContext<AppContextType | null>(null);
 
-  const addProject = (project: Project) => {
-    setProjects([...projects, project]);
+export function AppDataProvider(props: ProviderProps<{ projects: Project[] }>) {
+  const [projects, setProjects] = useState<Project[]>(props.value.projects);
+
+  const addProject = (title: string) => {
+    const newProject: Project = {
+      id: createId(),
+      name: title,
+      expenses: [],
+    };
+    setProjects([...projects, newProject]);
   };
 
   const addExpenseToProject = (projectId: string, expense: NewExpense) => {
@@ -306,16 +192,30 @@ export function useExpenseData() {
     });
   };
 
-  return {
-    projects,
-    getProject,
-    addProject,
-    addExpenseToProject,
-    addExpensePortion,
-    removeExpensePortion,
-    removeExpenseFromProject,
-    getExpense,
-    updateExpenseTitle,
-    updateExpensePortion,
-  };
+  return (
+    <AppDataContext.Provider
+      {...props}
+      value={{
+        projects,
+        addProject,
+        addExpenseToProject,
+        getProject,
+        getExpense,
+        updateExpenseTitle,
+        removeExpenseFromProject,
+        addExpensePortion,
+        removeExpensePortion,
+        updateExpensePortion,
+      }}
+    />
+  );
+}
+
+export function useAppData() {
+  const context = useContext(AppDataContext);
+  if (!context) {
+    throw new Error("useAppData can only be used under AppDataProvider");
+  }
+
+  return context;
 }

@@ -139,7 +139,7 @@ export function AddNewExpenseDialog({
               Add
             </Button>
             <DialogClose asChild>
-              <Button type="button" variant="secondary">
+              <Button ref={closeRef} type="button" variant="secondary">
                 Close
               </Button>
             </DialogClose>

@@ -21,7 +21,7 @@ export const getLastUpdatedExpense = (expenses: Expense[]) => {
 };
 
 export const getLastUpdatedPortion = (expense: Expense) => {
-  if (expense.expensePortions.length === 0) return null;
+  if (expense === null || expense.expensePortions.length === 0) return null;
   return expense.expensePortions.reduce((latest, portion) => {
     return new Date(portion.dateAdded) > new Date(latest.dateAdded)
       ? portion
@@ -36,4 +36,18 @@ export const getDateExpenseEdited = (expense: Expense) => {
 
     return currentDate > latestDate ? currentDate : latestDate;
   }, new Date("1970-01-01"));
+};
+
+export const sortExpensesByDate = (expenses: Expense[]) => {
+  return expenses.sort((a, b) => {
+    return (
+      getDateExpenseEdited(b).getTime() - getDateExpenseEdited(a).getTime()
+    );
+  });
+};
+
+export const sortExpensePortionsByDate = (portions: ExpensePortion[]) => {
+  return portions.sort((a, b) => {
+    return new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime();
+  });
 };
