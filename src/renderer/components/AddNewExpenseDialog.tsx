@@ -52,8 +52,10 @@ export function AddNewExpenseDialog({
 
     onExpenseAddClick({
       title: title.value,
-      portionDescription: portionDescription.value,
-      portionAmount: portionAmount.value,
+      portion: {
+        description: portionDescription.value,
+        amount: portionAmount.value,
+      },
     });
 
     setTitle({ value: "", error: "" });

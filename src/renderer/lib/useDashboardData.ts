@@ -1,53 +1,33 @@
-import {
-  calculateTotalExpenses,
-  getDateExpenseEdited,
-  getLastUpdatedExpense,
-  getLastUpdatedPortion,
-  sortProjectsByDate,
-} from "../../utils";
-import { useAppData } from "./dataStore";
+import { useEffect, useState } from "react";
 
 interface DashboardData {
-  projectsStats: {
-    id: string;
-    name: string;
-    totalExpenses: number | null;
-    lastExpense: {
-      title: string;
-      amount: number;
-      date: string;
-    } | null;
-  }[];
-
+  allProjectStats: ProjectStats[];
   addProject: (title: string) => void;
+  deleteProject: (id: string) => void;
 }
 
 export function useDashboardData(): DashboardData {
-  const { projects, addProject } = useAppData();
+  const [allProjectStats, setAllProjectStats] = useState([]);
 
-  const projectsStats = sortProjectsByDate(projects).map((project) => {
-    const totalExpenses = calculateTotalExpenses(project.expenses);
-    const lastExpense = getLastUpdatedExpense(project.expenses);
-    const lastUpdatedPortion = getLastUpdatedPortion(lastExpense);
-
-    return {
-      id: project.id,
-      name: project.name,
-      totalExpenses,
-      lastExpense: lastExpense
-        ? {
-            title: lastExpense.title,
-            amount: lastUpdatedPortion.amount,
-            date: new Date(
-              getDateExpenseEdited(lastExpense)
-            ).toLocaleDateString(),
-          }
-        : null,
-    };
+  useEffect(() => {
+    window.api.getAllProjectStats().then((projectsStats) => {
+      setAllProjectStats(projectsStats);
+    });
   });
 
+  const addProject = (title: string) => {
+    window.api.createProject(title).then((projectsStats) => {
+      setAllProjectStats(projectsStats);
+    });
+  };
+
+  const deleteProject = (id: string) => {
+    window.api.deleteProject(id);
+  };
+
   return {
-    projectsStats,
+    allProjectStats,
     addProject,
+    deleteProject,
   };
 }

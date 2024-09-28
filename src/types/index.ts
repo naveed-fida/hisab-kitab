@@ -11,6 +11,8 @@ type ExpensePortion = {
   description: string;
 };
 
+type NewExpensePortion = Pick<ExpensePortion, "amount" | "description">;
+
 type Project = {
   id: string;
   name: string;
@@ -18,10 +20,20 @@ type Project = {
   createdAt: string;
 };
 
+type ProjectStats = {
+  id: string;
+  name: string;
+  totalExpenses: number | null;
+  lastExpense: {
+    title: string;
+    amount: number;
+    date: string;
+  } | null;
+};
+
 type NewExpense = {
   title: string;
-  portionDescription: string;
-  portionAmount: number;
+  portion: NewExpensePortion;
 };
 
 type AppContextType = {

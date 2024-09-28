@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { CURRENCY } from "../lib/constants";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-} from "./ui/Dialog";
-import { DialogClose, DialogTitle } from "@radix-ui/react-dialog";
-import { Button } from "./ui/Button";
+import { Dialog, DialogTrigger } from "./ui/Dialog";
 import { useDashboardData } from "../lib/useDashboardData";
+import { NewProjectDialog } from "./NewProjectDialog";
+import { PenIcon, TrashIcon } from "lucide-react";
+import { DeleteDialog } from "./DeleteDialog";
+import { Button } from "./ui/Button";
+import { EditProjectDialog } from "./EditProjectDialog";
 
 const Dashboard: React.FC = () => {
-  const { projectsStats, addProject } = useDashboardData();
+  const { allProjectStats, addProject, deleteProject } = useDashboardData();
 
   return (
     <div>
@@ -22,33 +20,66 @@ const Dashboard: React.FC = () => {
         </h1>
       </div>
       <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {projectsStats.map((project) => {
+        {allProjectStats.map((project) => {
           return (
-            <Link
-              to={`/project/${project.id}`}
+            <div
+              className="rounded-lg shadow-md hover:bg-violet-100 transition duration-300 ease-in-out bg-violet-50"
               key={project.id}
-              className="block p-6 rounded-lg shadow-md hover:bg-violet-100 transition duration-300 ease-in-out bg-violet-50"
             >
-              <h2 className="text-xl text-gray-600 font-semibold mb-2">
-                {project.name}
-              </h2>
-              {project.totalExpenses ? (
-                <>
-                  <p className="text-gray-700">
-                    Total Expenses:{" "}
-                    <span className="font-semibold text-gray-900">
-                      {`${CURRENCY} ${project.totalExpenses.toFixed(2)}`}
-                    </span>
-                  </p>
-                  <p className="text-gray-500">
-                    Last Updated Expense: ${project.lastExpense.title} - PKR $
-                    {project.lastExpense.amount} on {project.lastExpense.date}
-                  </p>
-                </>
-              ) : (
-                <p className="text-gray-500">No expenses yet</p>
-              )}
-            </Link>
+              <Link to={`/project/${project.id}`} className="block p-6 ">
+                <h2 className="text-xl text-gray-600 font-semibold mb-2">
+                  {project.name}
+                </h2>
+                {project.totalExpenses ? (
+                  <>
+                    <p className="text-gray-700">
+                      Total Expenses:{" "}
+                      <span className="font-semibold text-gray-900">
+                        {`${CURRENCY} ${project.totalExpenses.toLocaleString()}`}
+                      </span>
+                    </p>
+                    <p className="text-gray-500">
+                      Last Updated Expense: {project.lastExpense.title} - PKR $
+                      {project.lastExpense.amount.toLocaleString()} on{" "}
+                      {project.lastExpense.date}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-gray-500">No expenses yet</p>
+                )}
+              </Link>
+              <div className="actions flex gap-2 justify-end items-center mt-2">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" type="button">
+                      <PenIcon className="w-5 h-5" />
+                    </Button>
+                  </DialogTrigger>
+                  <EditProjectDialog
+                    project={project}
+                    onSubmit={(name) => {
+                      window.api.updateProject(project.id, name);
+                    }}
+                  />
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      type="button"
+                      className="text-red-500"
+                    >
+                      <TrashIcon className="w-5 h-5" />
+                    </Button>
+                  </DialogTrigger>
+                  <DeleteDialog
+                    title={`Delete project: ${project.name}?`}
+                    description={`Are you sure you want to delete project ${project.name}?`}
+                    onConfirm={() => deleteProject(project.id)}
+                  />
+                </Dialog>
+              </div>
+            </div>
           );
         })}
 
@@ -67,64 +98,5 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
-interface NewProjectDialogProps {
-  onProjectAddClick: (projectName: string) => void;
-}
-
-function NewProjectDialog({ onProjectAddClick }: NewProjectDialogProps) {
-  const closeRef = React.useRef<HTMLButtonElement>(null);
-  const nameRef = React.useRef<HTMLInputElement>(null);
-  const [name, setName] = useState({ value: "", error: "" });
-
-  useEffect(() => {
-    if (name.error !== "") {
-      nameRef.current?.focus();
-    }
-  }, [name.error]);
-
-  return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle className="text-xl font-semibold mb-4">
-          Add New Project
-        </DialogTitle>
-      </DialogHeader>
-      <div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (!name.value) {
-              setName({ ...name, error: "Project name is required" });
-              return;
-            }
-            onProjectAddClick(name.value);
-            closeRef.current?.click();
-          }}
-        >
-          <label htmlFor="projectName" className="block mb-2">
-            Project Name
-          </label>
-          <input
-            id="projectName"
-            ref={nameRef}
-            type="text"
-            value={name.value}
-            onChange={(e) => setName({ value: e.target.value, error: "" })}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <div className="mt-4 flex justify-end gap-2">
-            <Button type="submit">Add</Button>
-            <DialogClose asChild>
-              <Button type="button" variant="secondary" ref={closeRef}>
-                Close
-              </Button>
-            </DialogClose>
-          </div>
-        </form>
-      </div>
-    </DialogContent>
-  );
-}
 
 export default Dashboard;
