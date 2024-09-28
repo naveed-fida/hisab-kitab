@@ -16,6 +16,7 @@ import {
 } from "./utils";
 import { renderToString } from "react-dom/server";
 import React from "react";
+import squirrelStartup from "electron-squirrel-startup";
 
 const OS_HOME = app.getPath("home");
 const DATA_DIR_NAME = "HisabKitab";
@@ -29,7 +30,7 @@ const pdfOptions: PrintToPDFOptions = {
 };
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
+if (squirrelStartup) {
   app.quit();
 }
 
