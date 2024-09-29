@@ -81,6 +81,22 @@ export function EditExpensePortionDialog({
           <div className="flex flex-col gap-4">
             <div>
               <label htmlFor="amount" className="font-medium">
+                Description
+              </label>
+              <Input
+                id="portion-description"
+                onChange={onDescriptionChange}
+                value={description.value}
+                ref={descriptionRef}
+                type="text"
+                className="mt-2"
+              />
+              {description.error !== "" ? (
+                <span className="text-red-500 ">{description.error}</span>
+              ) : null}
+            </div>
+            <div>
+              <label htmlFor="amount" className="font-medium">
                 Amount
               </label>
               <Input
@@ -94,22 +110,6 @@ export function EditExpensePortionDialog({
               />
               {amount.error !== "" ? (
                 <span className="text-red-500 ">{amount.error}</span>
-              ) : null}
-            </div>
-            <div>
-              <label htmlFor="amount" className="font-medium">
-                Description
-              </label>
-              <Input
-                id="portion-description"
-                onChange={onDescriptionChange}
-                value={description.value}
-                ref={descriptionRef}
-                type="text"
-                className="mt-2"
-              />
-              {description.error !== "" ? (
-                <span className="text-red-500 ">{description.error}</span>
               ) : null}
             </div>
           </div>
