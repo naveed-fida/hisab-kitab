@@ -84,7 +84,7 @@ app.on("ready", () => {
         const fileName = dialog.showSaveDialogSync(mainWindow, {
           title: `Save PDF for ${project.name}`,
           defaultPath: path.join(
-            app.getPath("downloads"),
+            app.getPath("desktop"),
             `${slugify(project.name)}.pdf`
           ),
           buttonLabel: "Save PDF",

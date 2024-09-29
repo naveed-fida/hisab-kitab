@@ -133,8 +133,11 @@ export const TableForPDF = ({ project }: { project: Project }) => {
               margin-bottom: 1rem;
             }
             h1 {
+              padding: 8px 16px;
+              background-color: #334155;
               font-size: 1.5rem;
               font-weight: bold;
+              color: #f8fafc;
               margin-bottom: 3rem;
             }
           }
@@ -145,10 +148,32 @@ export const TableForPDF = ({ project }: { project: Project }) => {
         <div>
           <h1>Expenses List for {project.name}</h1>
           <div>
-            <h2>
-              Total Expenses: {CURRENCY}{" "}
-              {calculateTotalExpenses(project.expenses).toLocaleString()}
-            </h2>
+            <div
+              style={{
+                display: "flex",
+                marginBottom: "10px",
+              }}
+            >
+              <span
+                style={{
+                  padding: "8px",
+                  minWidth: "100px",
+                  border: "1px solid #cbd5e1",
+                }}
+              >
+                Total Expenses
+              </span>
+              <span
+                style={{
+                  padding: "8px",
+                  backgroundColor: "#cbd5e1",
+                  minWidth: "100px",
+                }}
+              >
+                {CURRENCY}{" "}
+                {calculateTotalExpenses(project.expenses).toLocaleString()}
+              </span>
+            </div>
           </div>
           <table>
             <thead>
