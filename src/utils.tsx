@@ -105,19 +105,28 @@ export const TableForPDF = ({ project }: { project: Project }) => {
       <head>
         <style>
           {`
+          @media print {
             table {
               width: 100%;
               border-collapse: collapse;
               font-size: .9rem;
+              border: none;
             }
             th, td {
-              border: 1px solid black;
               padding: 8px;
+              border: none;
+              text-align: center;
             }
-            th {
-              background-color: #f2f2f2;
+            thead tr {
+              background-color: #475569 !important;
+              color: #f8fafc !important;
             }
-            
+            tbody tr:nth-child(even) {
+              background-color: #cbd5e1;
+            }
+            tbody tr:nth-child(odd) {
+              background-color: white;
+            }
             h2 {
               font-size: 1.2rem;
               font-weight: bold;
@@ -128,6 +137,7 @@ export const TableForPDF = ({ project }: { project: Project }) => {
               font-weight: bold;
               margin-bottom: 3rem;
             }
+          }
           `}
         </style>
       </head>

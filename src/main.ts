@@ -27,6 +27,7 @@ const PDF_HTML_PATH = path.join(DATA_DIR, "pdf.html");
 
 const pdfOptions: PrintToPDFOptions = {
   pageSize: "A4",
+  printBackground: true,
 };
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -89,7 +90,9 @@ app.on("ready", () => {
           buttonLabel: "Save PDF",
         });
 
-        writeFileSync(fileName, data);
+        if (fileName) {
+          writeFileSync(fileName, data);
+        }
         newWindow.close();
       });
     });
