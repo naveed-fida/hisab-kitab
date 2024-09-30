@@ -1,6 +1,7 @@
 import { app } from "electron";
 import path from "path";
 
+export const CURRENCY = "USD";
 export const OS_HOME = app.getPath("home");
 export const DATA_DIR_NAME = "HisabKitab";
 export const DATA_DIR = path.join(OS_HOME, "Dropbox", DATA_DIR_NAME);

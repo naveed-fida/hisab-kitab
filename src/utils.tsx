@@ -1,5 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
-import { CURRENCY } from "./renderer/lib/constants";
+import { CURRENCY } from "./constants";
 
 export const calculateTotalExpenses = (expenses: Expense[]) => {
   return expenses.reduce((total, expense) => {
