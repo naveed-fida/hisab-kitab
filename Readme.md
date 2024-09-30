@@ -2,6 +2,12 @@
 
 HisabKitab is an app for tracking project expenses.
 
+
+
+<video src="https://github.com/user-attachments/assets/e801783a-a3f8-4984-b435-b56e3114b3a8"></video>
+
+
+
 ## Tech Stack
 
 HisabKitab is built with Electron and React. You'll need a Node version > 18 to build it on your machine.
