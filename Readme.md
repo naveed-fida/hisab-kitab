@@ -1,6 +1,6 @@
 # About
 
-HisabKitab is an app for tracking project expenses. The following animation explains how it works:
+HisabKitab is an app for tracking project expenses.
 
 ## Tech Stack
 
@@ -21,6 +21,8 @@ On MacOS and Linux the home directory is often:
 ```
 /users/{username}
 ```
+
+To change the default directory, you can simply change the `DATA_DIR` constant in the file `./src/constants.ts`.
 
 ## Why Dropbox Directory?
 

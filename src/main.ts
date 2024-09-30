@@ -18,13 +18,6 @@ import { renderToString } from "react-dom/server";
 import React from "react";
 import squirrelStartup from "electron-squirrel-startup";
 
-const OS_HOME = app.getPath("home");
-const DATA_DIR_NAME = "HisabKitab";
-const DATA_DIR = path.join(OS_HOME, "Dropbox", DATA_DIR_NAME);
-const PROJECTS_STATS_FILE_PATH = path.join(DATA_DIR, "stats.json");
-const PROJECT_FILE_PREFIX = "project-";
-const PDF_HTML_PATH = path.join(DATA_DIR, "pdf.html");
-
 const pdfOptions: PrintToPDFOptions = {
   pageSize: "A4",
   printBackground: true,
