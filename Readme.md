@@ -2,11 +2,7 @@
 
 HisabKitab is an app for tracking project expenses. The following video shows how it works.
 
-
-
 <video src="https://github.com/user-attachments/assets/e801783a-a3f8-4984-b435-b56e3114b3a8"></video>
-
-
 
 ## Tech Stack
 
@@ -28,7 +24,9 @@ On MacOS and Linux the home directory is often:
 /users/{username}
 ```
 
-To change the default directory, you can simply change the `DATA_DIR` constant in the file `./src/constants.ts`.
+## App Constants
+
+The constants used in the app are defined inside `./src/constants.ts`. To change the default data directory for example, you can simply change the `DATA_DIR` constant. You can also change your currency by redefinding the `CURRENCY` constant.
 
 ## Why Dropbox Directory?
 
@@ -45,4 +43,4 @@ Here's how to run it on your local machine in development mode. Make sure you ha
 
 ## How to Build.
 
-Same instructions as above apply except that for the last step you run `npm run package` instead. This will build the app for your platform. The app can be found inside `./out` in the repo.
+Same instructions as above apply except that for the last step you run `npm run package` instead. This will package the application for your platform. The packaged app can be found inside `./out` in the repo.
