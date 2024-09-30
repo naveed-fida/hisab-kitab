@@ -1,6 +1,6 @@
 # About
 
-HisabKitab is an app for tracking project expenses.
+HisabKitab is an app for tracking project expenses. The following video shows how it works.
 
 
 
