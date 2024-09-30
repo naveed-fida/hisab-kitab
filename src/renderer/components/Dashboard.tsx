@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CURRENCY } from "../lib/constants";
+import { CURRENCY } from "../../constants";
 import { Dialog, DialogTrigger } from "./ui/Dialog";
 import { useDashboardData } from "../lib/useDashboardData";
 import { NewProjectDialog } from "./NewProjectDialog";

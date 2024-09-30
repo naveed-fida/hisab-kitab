@@ -23,7 +23,7 @@ import { AddPortionDialog } from "./AddPortionDialog";
 import { DeleteDialog } from "./DeleteDialog";
 import { EditExpenseDialog } from "./EditExpenseDialog";
 import { EditExpensePortionDialog } from "./EditExpensePortionDialog";
-import { CURRENCY } from "../lib/constants";
+import { CURRENCY } from "../../constants";
 import { AddNewExpenseDialog } from "./AddNewExpenseDialog";
 import { useProject } from "../lib/useProject";
 
